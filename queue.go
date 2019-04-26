@@ -5,46 +5,32 @@ import (
 )
 
 type QueueManager struct {
-	queues []queue
-}
-
-func (pm *QueueManager) qlist() ([]string) {
-	qlen := len(pm.queues)
-	qlist := []string{}
-	for i := 0; i < qlen; i++ {
-		qlist = append(qlist[:i], pm.queues[i].name)
-	}
-	return qlist
+	queues *[]queue
 }
 
 type queue struct {
 	name string
-	datas []data
-}
-
-type data struct {
-	name string
-	data string
+	datas *[]string
 }
 
 func main() {
-	fmt.Println("start")
-
-	d := data{name: "Programing language", data: "Python"}
-
 	// 初期化
-	q := queue{name: "", datas: []data{}}
-	qm := QueueManager{queues: []queue{}}
+	dlist := []string{}
+	qname := "Programing_language"
+	q := queue{name: qname, datas: &dlist}
+	qlist := []queue{q}
+	qm := QueueManager{queues: &qlist}
 
-	q.name = d.name
-	q.datas = append(q.datas, d)
+	// データを格納
+	d := "Python"
+	dlist = append(dlist, d)
 
-	qm.queues = append(qm.queues, q)
+	d = "Ruby"
+	dlist = append(dlist, d)
 
-	d = data{name: "Programing language", data: "Ruby"}
-	q.datas = append(q.datas, d)
-	
+	// キューを表示
 	fmt.Println(q)
-	fmt.Println(qm.queues)
-	fmt.Println(qm.qlist())
+	fmt.Println((*qm.queues)[0])
+	fmt.Println("Queue name:", q.name)
+	fmt.Println("Data:", *(*qm.queues)[0].datas)
 }
